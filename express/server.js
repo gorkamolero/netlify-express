@@ -1,10 +1,9 @@
+'use strict';
 const express = require('express');
 const bodyParser = require('body-parser')
 const fetch = require('node-fetch');
 const app = express()
 const port = 3008
-
-
 
 const router = express.Router();
 router.get('/', (req, res) => {
