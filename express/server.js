@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   res.end();
 });
 router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
-router.post('/api/generate', (req, res) => {
+router.post('/', (req, res) => {
   var PROMPT = req.body.subject;
   var raw = JSON.stringify({"prompt": PROMPT, "max_tokens": 5 });
 
