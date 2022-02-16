@@ -4,9 +4,16 @@ const fetch = require('node-fetch');
 const app = express()
 const port = 3008
 
-app.use(bodyParser.json());
 
-app.post('/api/generate', (req, res) => {
+
+const router = express.Router();
+router.get('/', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>Hello from AcendAI!</h1>');
+  res.end();
+});
+router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
+router.post('/api/generate', (req, res) => {
   var PROMPT = req.body.subject;
   var raw = JSON.stringify({"prompt": PROMPT, "max_tokens": 5 });
 
@@ -31,6 +38,12 @@ app.post('/api/generate', (req, res) => {
     })
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+
+
+app.use(bodyParser.json());
+app.use('/.netlify/functions/server', router);  // path must route to lambda
+app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
+
+
+module.exports = app;
+module.exports.handler = serverless(app);
